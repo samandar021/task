@@ -1,0 +1,11 @@
+groups:
+  - name: latency-alerts
+    rules:
+      - alert: HighRequestLatency
+        expr: histogram_quantile(0.95, sum(rate(app_request_latency_seconds_bucket[2m])) by (le)) > 1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request latency"
+          description: "p95 latency is above 1 second for the last minute"
